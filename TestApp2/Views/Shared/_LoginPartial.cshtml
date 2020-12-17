@@ -1,0 +1,23 @@
+﻿@using Microsoft.TeamFoundation.Client;
+    @if (Session["tfs"] is TfsTeamProjectCollection && ((TfsTeamProjectCollection)Session["tfs"]).HasAuthenticated )
+    {
+        var teamPC = (TfsTeamProjectCollection)Session["tfs"];
+        //using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+        {
+                @Html.AntiForgeryToken()
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li>@Html.ActionLink("Приветствую " + teamPC.AuthorizedIdentity.DisplayName + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })</li>
+                    <li>@Html.ActionLink("Выход", "Logout", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+            </ul>
+        }
+    }
+    <!--else
+{-->
+@* Говорит о том что класс такой располагаем справа
+    а внутри передаваемый текст в действие GET Login, внутри контроллера AccountController*@
+<!--<ul class="nav navbar-nav navbar-right">
+    <li>@Html.ActionLink("Выполнить вход", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+</ul>
+}-->
+
