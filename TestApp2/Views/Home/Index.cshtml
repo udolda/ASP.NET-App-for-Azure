@@ -1,11 +1,12 @@
 ﻿@{
     ViewBag.Title = "Home Page";
-    
+    string s = Session["info"] == null ? "fuck, no data" : (string)Session["info"];
 }
 
 <div class="jumbotron">
     <h1>LATeam представляет</h1>
     <p class="lead"> Информация о тестированиях! </p>
+    <p class="lead">@s</p>
     <p><a href="/oauth/Authorize" class="btn btn-primary btn-large">Authorize &raquo;</a></p>
     <p class="btn btn-primary "> @Html.ActionLink("Погнали", "Login",@*"Account",*@routeValues: null, htmlAttributes: new { id = "loginLink" })</p>
     @*<p> <a class="btn btn-default" href="https://app.vssps.visualstudio.com/oauth2/authorize?client_id=285F1BF4-69FA-487A-AF9A-F7F59494D3B3&response_type=Assertion&state=User1&scope=vso.code%20vso.identity_manage&redirect_uri=https://appwithidentity.azurewebsites.net/oauth-callback">Register &raquo;</a> </p>*@

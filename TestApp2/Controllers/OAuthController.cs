@@ -26,6 +26,7 @@ namespace TestApp2.Controllers
         /// <returns></returns>
         public ActionResult Authorize()
         {
+            Session["info"] += "Hi, bro, you're in Authorise().\n";
             Guid state = Guid.NewGuid();
 
             s_authorizationRequests[state] = new TokenModel() { IsPending = true };
@@ -49,19 +50,22 @@ namespace TestApp2.Controllers
             queryParams["scope"] = ConfigurationManager.AppSettings["Scope"];
             queryParams["redirect_uri"] = ConfigurationManager.AppSettings["CallbackUrl"];
 
-            uriBuilder.Query = "client_id=285F1BF4-69FA-487A-AF9A-F7F59494D3B3&response_type=Assertion&state=User1&scope=vso.code%20vso.identity_manage&redirect_uri=https://appwithidentity.azurewebsites.net/oauth/callback";//queryParams.ToString();
+            uriBuilder.Query = "client_id=285F1BF4-69FA-487A-AF9A-F7F59494D3B3&response_type=Assertion&state=" + state + "&scope=vso.code%20vso.identity_manage&redirect_uri=https://appwithidentity.azurewebsites.net/oauth/callback";//queryParams.ToString();
 
             return uriBuilder.ToString();
         }
 
         /// <summary>
         /// Callback action. Invoked after the user has authorized the app.
+        /// Gets token.
         /// </summary>
         /// <param name="code"></param>
         /// <param name="state"></param>
         /// <returns></returns>
         public async Task<ActionResult> Callback(String code, Guid state)
         {
+            Session["info"] += "Hi, bro, you're in Callback().\n";
+
             String error;
             if (ValidateCallbackValues(code, state.ToString(), out error))
             {
