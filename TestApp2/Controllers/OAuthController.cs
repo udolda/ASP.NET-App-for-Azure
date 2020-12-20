@@ -19,9 +19,9 @@ namespace TestApp2.Controllers
         private static readonly Dictionary<Guid, TokenModel> s_authorizationRequests = new Dictionary<Guid, TokenModel>();
 
         /// <summary>
-        /// Start a new authorization request. 
-        /// 
-        /// This creates a random state value that is used to correlate/validate the request in the callback later.
+        /// Запустите новый запрос авторизации.
+        ///
+        /// Это создает случайное значение состояния, которое используется для корреляции/проверки запроса в обратном вызове позже.
         /// </summary>
         /// <returns></returns>
         public ActionResult Authorize()
@@ -35,7 +35,7 @@ namespace TestApp2.Controllers
         }
 
         /// <summary>
-        /// Constructs an authorization URL with the specified state value.
+        /// Создает URL-адрес авторизации с указанным значением состояния.
         /// </summary>
         /// <param name="state"></param>
         /// <returns></returns>
@@ -56,8 +56,8 @@ namespace TestApp2.Controllers
         }
 
         /// <summary>
-        /// Callback action. Invoked after the user has authorized the app.
-        /// Gets token.
+        /// Действие обратного вызова. Вызывается после того, как пользователь авторизовал приложение.
+        /// Получает токен.
         /// </summary>
         /// <param name="code"></param>
         /// <param name="state"></param>
@@ -111,7 +111,8 @@ namespace TestApp2.Controllers
         }
 
         /// <summary>
-        /// Ensures the specified auth code and state value are valid. If both are valid, the state value is marked so it can't be used again.        
+        /// Гарантирует, что указанный код аутентификации и значение состояния являются допустимыми.
+        /// Если оба они действительны, то значение состояния помечается так, чтобы его нельзя было использовать снова.       
         /// </summary>
         /// <param name="code"></param>
         /// <param name="state"></param>
@@ -145,7 +146,8 @@ namespace TestApp2.Controllers
                     }
                     else
                     {
-                        s_authorizationRequests[authorizationRequestKey].IsPending = false; // mark the state value as used so it can't be reused
+                        // отметьте значение состояния как используемое, чтобы его нельзя было использовать повторно
+                        s_authorizationRequests[authorizationRequestKey].IsPending = false; 
                     }
                 }
             }
@@ -163,7 +165,7 @@ namespace TestApp2.Controllers
             String error = null;
             if (!String.IsNullOrEmpty(refreshToken))
             {
-                // Form the request to exchange an auth code for an access token and refresh token
+                // Сформировать запрос на обмен кода аутентификации на токен доступа и токен обновления
                 HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, ConfigurationManager.AppSettings["TokenUrl"]);
                 requestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -177,12 +179,12 @@ namespace TestApp2.Controllers
                 };
                 requestMessage.Content = new FormUrlEncodedContent(form);
 
-                // Make the request to exchange the auth code for an access token (and refresh token)
+                // Сделайте запрос на обмен кода аутентификации на токен доступа (и токен обновления)
                 HttpResponseMessage responseMessage = await s_httpClient.SendAsync(requestMessage);
 
                 if (responseMessage.IsSuccessStatusCode)
                 {
-                    // Handle successful request
+                    // Обрабатывать успешный запрос
                     String body = await responseMessage.Content.ReadAsStringAsync();
                     ViewBag.Token = JObject.Parse(body).ToObject<TokenModel>();
                 }
