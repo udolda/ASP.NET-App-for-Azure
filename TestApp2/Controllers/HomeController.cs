@@ -39,14 +39,14 @@ namespace TestApp2.Controllers
             ViewBag.ReturnUrl = returnUrl;
 
             var collectionUri = new Uri("https://dev.azure.com/LATeamInc/");
-            Session["token"] = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Im9PdmN6NU1fN3AtSGpJS2xGWHo5M3VfVjBabyJ9.eyJuYW1laWQiOiJkMGIyMjQ3My1jYjEyLTZmYTQtYTY0ZS00NGQwMWQ1NzlhNmQiLCJzY3AiOiJ2c28uYWdlbnRwb29scyB2c28uYW5hbHl0aWNzIHZzby5hdWRpdGxvZyB2c28uYnVpbGQgdnNvLmNvZGUgdnNvLmRhc2hib2FyZHMgdnNvLmVudGl0bGVtZW50cyB2c28uZXh0ZW5zaW9uIHZzby5leHRlbnNpb24uZGF0YSB2c28uZ3JhcGggdnNvLmlkZW50aXR5IHZzby5sb2FkdGVzdCB2c28ubm90aWZpY2F0aW9uX2RpYWdub3N0aWNzIHZzby5wYWNrYWdpbmcgdnNvLnByb2plY3QgdnNvLnJlbGVhc2UgdnNvLnNlcnZpY2VlbmRwb2ludCB2c28uc3ltYm9scyB2c28udGFza2dyb3Vwc19yZWFkIHZzby50ZXN0IHZzby50b2tlbmFkbWluaXN0cmF0aW9uIHZzby50b2tlbnMgdnNvLnZhcmlhYmxlZ3JvdXBzX3JlYWQgdnNvLndpa2kgdnNvLndvcmsiLCJhdWkiOiIxZWQxMTk2Yi1mOWZiLTQ5MjgtYTVkNS00OTNlYjBmNWNkMjgiLCJhcHBpZCI6IjY4Y2UxOTJlLTM2YmEtNGJhZS1iNGJkLTA3NTY2ODViN2I1YSIsImlzcyI6ImFwcC52c3Rva2VuLnZpc3VhbHN0dWRpby5jb20iLCJhdWQiOiJhcHAudnN0b2tlbi52aXN1YWxzdHVkaW8uY29tIiwibmJmIjoxNjA4NTY0Mjc1LCJleHAiOjE2MDg1Njc4NzV9.FcKLz2NTKNnckZ6vCViqDNgsM8_A_2y70wEnCWOLxdT5ZxWeqt7xhn4EesQLENB2ZMqBZ1U2aSeDKNgmCvpUplGXXnmPfePq1C_PgeF4Eh-5WfuK-L2hRko5Ivsw55-upi9gBjae4imJ8yk2nS9nmLM4ixlbzK39Iom95dxEhtOc7I-wF37UED4FOVpNIcMjzbxVn4krAZ2CNL1yOj-F9qjWQ65ytjrK56ZyCRdcHjpUl-A-rauCOClOAZSsvuoyJs7ohxzbArjCR71tIJ51oTDbS7qufd961DAseJZhj1wyRq8yD5KbPngcXFU840rb57PFGZavh2V_LplKNUNSdg";
+            Session["token"] = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Im9PdmN6NU1fN3AtSGpJS2xGWHo5M3VfVjBabyJ9.eyJuYW1laWQiOiJiYTYxM2E0NC0zM2M5LTY0MGUtYjg0Yy1kNWFlNGU3NmIwMzIiLCJzY3AiOiJ2c28uYWdlbnRwb29scyB2c28uYW5hbHl0aWNzIHZzby5hdWRpdGxvZyB2c28uYnVpbGQgdnNvLmNvZGUgdnNvLmRhc2hib2FyZHMgdnNvLmVudGl0bGVtZW50cyB2c28uZXh0ZW5zaW9uIHZzby5leHRlbnNpb24uZGF0YSB2c28uZ3JhcGggdnNvLmlkZW50aXR5IHZzby5sb2FkdGVzdCB2c28ubm90aWZpY2F0aW9uX2RpYWdub3N0aWNzIHZzby5wYWNrYWdpbmcgdnNvLnByb2plY3QgdnNvLnJlbGVhc2UgdnNvLnNlcnZpY2VlbmRwb2ludCB2c28uc3ltYm9scyB2c28udGFza2dyb3Vwc19yZWFkIHZzby50ZXN0IHZzby50b2tlbmFkbWluaXN0cmF0aW9uIHZzby50b2tlbnMgdnNvLnZhcmlhYmxlZ3JvdXBzX3JlYWQgdnNvLndpa2kgdnNvLndvcmsiLCJhdWkiOiI3MDIzYjJjNy0xZWZiLTQ0NjItYjVjNS1lNWQ3MDAwMmJhNTIiLCJhcHBpZCI6IjY4Y2UxOTJlLTM2YmEtNGJhZS1iNGJkLTA3NTY2ODViN2I1YSIsImlzcyI6ImFwcC52c3Rva2VuLnZpc3VhbHN0dWRpby5jb20iLCJhdWQiOiJhcHAudnN0b2tlbi52aXN1YWxzdHVkaW8uY29tIiwibmJmIjoxNjA4NTc3NzE4LCJleHAiOjE2MDg1ODEzMTh9.umW9QkUz7lHayZ7X_LLM27pQDJHDHpJqxUL5yA6Qf2AO0X7ez1TUzGSaOQBjdyPp2QLzNBkIMGKZifS7oO0Wq2PlAKP6aFdxGpphax_lBo6T1VY8_N86bHk3v2lxtJ07EuXPYJsQ-Cqm9Wop__HF0kfN_Zm-9Sr6ruHicedEsvtDN8pnZIFJxduz8Z6PU1oewgZmYSUCDGhwsiykAnaNe-0qQI9zlSCXTrsfu5agb4ZAfDSFrTgCH_pQPXUPNphAgWErIpwoXM6HwezuC1zp5W07a493ml7plGZeYJPqmBfuQTX5Ka6S2V3z_qitXFpxVVXkqk6tfhc7UsYy2LrdWw";
             VssConnection connection = new VssConnection(new Uri("https://dev.azure.com/LATeamInc/"), new VssOAuthAccessTokenCredential((string)Session["token"]));
             Session["connect"] = connection;
             string s = connection.AuthorizedIdentity.DisplayName;
             bool t = connection.HasAuthenticated;
 
             
-            GetInfo.SampleREST(connection, "WorkPractice");
+            GetInfo.SampleREST(connection);
             //var auth = new Authenticate();
             //var teamPC = (TfsTeamProjectCollection)Session["tfs"];
             //WorkItem w = new WorkItem(teamPC);
