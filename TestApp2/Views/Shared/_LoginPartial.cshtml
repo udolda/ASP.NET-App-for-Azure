@@ -1,5 +1,5 @@
 ﻿@using Microsoft.VisualStudio.Services.WebApi;
-    @if (Session["connect"] is VssConnection && ((VssConnection)Session["connect"]).HasAuthenticated )
+    @if (Session["connect"] is VssConnection && ((VssConnection)Session["connect"]).HasAuthenticated)
     {
         var teamPC = (VssConnection)Session["connect"];
         //using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
@@ -8,16 +8,18 @@
 
                 <ul class="nav navbar-nav navbar-right">
                     <li>@Html.ActionLink("Приветствую " + teamPC.AuthorizedIdentity.DisplayName + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })</li>
+                    <li>@Html.ActionLink("RFR Test", "TestsInfo", "ReadyForRelease")</li>
                     <li>@Html.ActionLink("Выход", "Logout", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
             </ul>
         }
     }
-    <!--else
-{-->
-@* Говорит о том что класс такой располагаем справа
-    а внутри передаваемый текст в действие GET Login, внутри контроллера AccountController*@
-<!--<ul class="nav navbar-nav navbar-right">
-    <li>@Html.ActionLink("Выполнить вход", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
-</ul>
-}-->
+    else
+    {
+        //Говорит о том что класс такой располагаем справа
+        //   а внутри передаваемый текст в действие GET Login, внутри контроллера AccountController
+        <ul class="nav navbar-nav navbar-right">
+            <li>@Html.ActionLink("Войти", "Authorize", "OAuth", routeValues: null, htmlAttributes: new { id = "autorise" })</li>
+            <li><a href="/oauth/Authorize" class="btn btn-primary btn-large">Authorize &raquo;</a></li>
+        </ul>
+    }
 
