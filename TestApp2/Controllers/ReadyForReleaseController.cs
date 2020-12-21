@@ -20,7 +20,7 @@ namespace TestApp2.Controllers
             var token = (TokenModel)Session["token"];
             Session["token"] = await GetInfo.RefreshToken(token.RefreshToken);
             // обновить соединение 
-            var connect = new VssConnection(new Uri("https://dev.azure.com/LATeamInc/"), new VssOAuthAccessTokenCredential((string)Session["token"]));
+            var connect = new VssConnection(new Uri("https://dev.azure.com/LATeamInc/"), new VssOAuthAccessTokenCredential(((TokenModel)Session["token"]).AccessToken));
             Session["connect"] = connect;
 
             GetInfo.SampleREST(connect);
