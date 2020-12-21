@@ -1,7 +1,7 @@
-﻿@using Microsoft.TeamFoundation.Client;
-    @if (Session["tfs"] is TfsTeamProjectCollection && ((TfsTeamProjectCollection)Session["tfs"]).HasAuthenticated )
+﻿@using Microsoft.VisualStudio.Services.WebApi;
+    @if (Session["connect"] is VssConnection && ((VssConnection)Session["connect"]).HasAuthenticated )
     {
-        var teamPC = (TfsTeamProjectCollection)Session["tfs"];
+        var teamPC = (VssConnection)Session["connect"];
         //using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
         {
                 @Html.AntiForgeryToken()
