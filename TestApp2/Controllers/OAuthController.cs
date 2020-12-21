@@ -50,7 +50,7 @@ namespace TestApp2.Controllers
             queryParams["scope"] = ConfigurationManager.AppSettings["Scope"];
             queryParams["redirect_uri"] = ConfigurationManager.AppSettings["CallbackUrl"];
 
-            uriBuilder.Query = "client_id=285F1BF4-69FA-487A-AF9A-F7F59494D3B3&response_type=Assertion&state=" + state + "&scope=vso.code%20vso.identity_manage&redirect_uri=https://appwithidentity.azurewebsites.net/oauth/callback";//queryParams.ToString();
+            uriBuilder.Query = "client_id=68CE192E-36BA-4BAE-B4BD-0756685B7B5A&response_type=Assertion&state=" + state + "&scope=vso.agentpools%20vso.analytics%20vso.auditlog%20vso.build%20vso.code%20vso.dashboards%20vso.entitlements%20vso.extension%20vso.extension.data%20vso.graph%20vso.identity%20vso.loadtest%20vso.notification_diagnostics%20vso.packaging%20vso.project%20vso.release%20vso.serviceendpoint%20vso.symbols%20vso.taskgroups_read%20vso.test%20vso.tokenadministration%20vso.tokens%20vso.variablegroups_read%20vso.wiki%20vso.work&redirect_uri=https://testingtimeinfoapp.azurewebsites.net/oauth/callback";//queryParams.ToString();
 
             return uriBuilder.ToString();
         }
