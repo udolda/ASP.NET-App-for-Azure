@@ -19,7 +19,7 @@ namespace TestApp2.Controllers
         private static readonly Dictionary<Guid, TokenModel> s_authorizationRequests = new Dictionary<Guid, TokenModel>();
 
         /// <summary>
-        /// Запустите новый запрос авторизации.
+        /// Запускает новый запрос авторизации.
         ///
         /// Это создает случайное значение состояния, которое используется для корреляции/проверки запроса в обратном вызове позже.
         /// </summary>
