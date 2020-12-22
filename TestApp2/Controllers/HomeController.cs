@@ -16,22 +16,30 @@ namespace TestApp2.Controllers
     {
         public ActionResult Index()
         {
-            return View();
-            
-        }
-
-        [HttpPost]
-        public ActionResult Index(string returnUrl)
-        {
             if (Session["token"] != null)
             {
                 var token = (TokenModel)Session["token"];
                 VssConnection connection = new VssConnection(new Uri("https://dev.azure.com/LATeamInc/"), new VssOAuthAccessTokenCredential(token.AccessToken));
+                string name = connection.AuthorizedIdentity.DisplayName;
                 Session["connect"] = connection;
+                Session["info"] += connection.HasAuthenticated.ToString() + " " + name + " " + token.AccessToken;
+
             }
             return View();
-
         }
+
+        //[HttpPost]
+        //public ActionResult Index(string returnUrl)
+        //{
+        //    if (Session["token"] != null)
+        //    {
+        //        var token = (TokenModel)Session["token"];
+        //        VssConnection connection = new VssConnection(new Uri("https://dev.azure.com/LATeamInc/"), new VssOAuthAccessTokenCredential(token.AccessToken));
+        //        Session["connect"] = connection;
+        //    }
+        //    return View();
+
+        //}
 
         public ActionResult About()
         {

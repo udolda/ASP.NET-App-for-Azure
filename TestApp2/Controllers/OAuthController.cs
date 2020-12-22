@@ -25,7 +25,6 @@ namespace TestApp2.Controllers
         /// <returns></returns>
         public ActionResult Authorize()
         {
-            Session["info"] += "Hi, bro, you're in Authorise().\n";
             Guid state = Guid.NewGuid();
             s_authorizationRequests[state] = new TokenModel() { IsPending = true };
             return new RedirectResult(GetAuthorizationUrl(state.ToString()));
@@ -47,8 +46,8 @@ namespace TestApp2.Controllers
             queryParams["scope"] = ConfigurationManager.AppSettings["Scope"];
             queryParams["redirect_uri"] = ConfigurationManager.AppSettings["CallbackUrl"];
 
-            uriBuilder.Query = queryParams.ToString();
-                //"client_id=68CE192E-36BA-4BAE-B4BD-0756685B7B5A&response_type=Assertion&state=" + state + "&scope=vso.agentpools%20vso.analytics%20vso.auditlog%20vso.build%20vso.code%20vso.dashboards%20vso.entitlements%20vso.extension%20vso.extension.data%20vso.graph%20vso.identity%20vso.loadtest%20vso.notification_diagnostics%20vso.packaging%20vso.project%20vso.release%20vso.serviceendpoint%20vso.symbols%20vso.taskgroups_read%20vso.test%20vso.tokenadministration%20vso.tokens%20vso.variablegroups_read%20vso.wiki%20vso.work&redirect_uri=https://testingtimeinfoapp.azurewebsites.net/oauth/callback";
+            //uriBuilder.Query = queryParams.ToString();
+            uriBuilder.Query = "client_id=68CE192E-36BA-4BAE-B4BD-0756685B7B5A&response_type=Assertion&state=" + state + "&scope=vso.agentpools%20vso.analytics%20vso.auditlog%20vso.build%20vso.code%20vso.dashboards%20vso.entitlements%20vso.extension%20vso.extension.data%20vso.graph%20vso.identity%20vso.loadtest%20vso.notification_diagnostics%20vso.packaging%20vso.project%20vso.release%20vso.serviceendpoint%20vso.symbols%20vso.taskgroups_read%20vso.test%20vso.tokenadministration%20vso.tokens%20vso.variablegroups_read%20vso.wiki%20vso.work&redirect_uri=https://testingtimeinfoapp.azurewebsites.net/oauth/callback";
 
             return uriBuilder.ToString();
         }
@@ -62,8 +61,6 @@ namespace TestApp2.Controllers
         /// <returns></returns>
         public async Task<ActionResult> Callback(String code, Guid state)
         {
-            Session["info"] += "Hi, bro, you're in Callback().\n";
-
             String error;
             if (ValidateCallbackValues(code, state.ToString(), out error))
             {
@@ -105,7 +102,7 @@ namespace TestApp2.Controllers
 
             ViewBag.ProfileUrl = ConfigurationManager.AppSettings["ProfileUrl"];
 
-            return View("Index");
+            return Redirect("/Home/Index");
             //return View("TokenView");
         }
 

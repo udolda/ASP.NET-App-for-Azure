@@ -22,7 +22,7 @@ namespace TestApp2.Controllers
             // обновить соединение 
             var connect = new VssConnection(new Uri("https://dev.azure.com/LATeamInc/"), new VssOAuthAccessTokenCredential(((TokenModel)Session["token"]).AccessToken));
             Session["connect"] = connect;
-
+            ViewBag.Name = connect.AuthorizedIdentity.DisplayName;
             GetInfo.SampleREST(connect);
 
             return View();

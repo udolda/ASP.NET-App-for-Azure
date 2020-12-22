@@ -9,7 +9,7 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li>@Html.ActionLink("Приветствую " + teamPC.AuthorizedIdentity.DisplayName + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })</li>
                     <li>@Html.ActionLink("RFR Test", "TestsInfo", "ReadyForRelease")</li>
-                    <li>@Html.ActionLink("Выход", "Logout", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+                    <li>@Html.ActionLink("Выход", "Logout", "Home", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
             </ul>
         }
     }
@@ -19,7 +19,6 @@
         //   а внутри передаваемый текст в действие GET Login, внутри контроллера AccountController
         <ul class="nav navbar-nav navbar-right">
             <li>@Html.ActionLink("Войти", "Authorize", "OAuth", routeValues: null, htmlAttributes: new { id = "autorise" })</li>
-            <li><a href="/oauth/Authorize" class="btn btn-primary btn-large">Authorize &raquo;</a></li>
         </ul>
     }
 
