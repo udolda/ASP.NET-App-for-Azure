@@ -1,0 +1,70 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace TestApp2.Models
+{
+    public class TesterModel
+    {
+        public struct TaskData
+        {
+            public int count;
+            public int time;
+
+           // public TaskData(int _count, int _time) { count = _count; time = _time; }
+        }
+        public string lastName;
+        public int sumCountTest;
+        public List<TaskData> taskDatas;
+
+        public TesterModel()
+        {
+            lastName = "None";
+            sumCountTest = 0;
+            taskDatas = new List<TaskData>();
+            for (int i = 0; i < 6; i++)
+                taskDatas.Add(new TaskData());
+        }
+
+        public void AddTaskData(int comlexity, int time)
+        {
+            var val = taskDatas[comlexity-1];
+            val.count += 1;
+            val.time += time;
+            taskDatas[comlexity-1] = val;
+            sumCountTest += 1;
+        }
+        public double GetVolumeOfComplexity()
+        {
+            double sum_volume = 0;
+            for (int i = 0; i < taskDatas.Count; i++)
+            {
+                sum_volume += (((double)(i + 1)) / 10 * taskDatas[i].count);
+            }
+            return sum_volume;
+        }
+        public double GetPlannedTestingTime()
+        {
+            int[] planing_time = new int[6] { 15, 30, 60, 132, 180, 230 };
+            double sum_time = 0;
+            for (int i = 0; i < planing_time.Count(); i++)
+            {
+                sum_time += (planing_time[i] * taskDatas[i].count);
+            }
+            return sum_time / 60;
+        }
+        public double GetActualTestingTime()
+        {
+            int[] planing_time = new int[6] { 15, 30, 60, 132, 180, 230 };
+            double sum_time = 0;
+            for (int i = 0; i < planing_time.Count(); i++)
+            {
+                sum_time += (taskDatas[i].time * taskDatas[i].count);
+            }
+            return sum_time / 60;
+        }
+
+
+    }
+}

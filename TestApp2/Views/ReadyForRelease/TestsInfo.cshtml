@@ -1,8 +1,21 @@
 ﻿
 @{
     ViewBag.Title = "TestsInfo";
-    
+
 }
 
 <h2>@ViewBag.Name</h2>
 
+<form>
+    <p>
+        <select name="tasktags">
+            <option value="do it" selected>Do it</option>
+            <option value="do it">Раки, фаршированные по-царски</option>
+            <option value="test">Test</option>
+            <option value="test">Галушки славянские</option>
+        </select>
+    </p>
+    <p><input type="submit" value="Отправить"></p>
+
+    <p> @ViewBag.Fail</p>
+</form>
