@@ -11,9 +11,8 @@ namespace TestApp2.Models
         {
             public int count;
             public int time;
-
-           // public TaskData(int _count, int _time) { count = _count; time = _time; }
         }
+
         public string lastName;
         public int sumCountTest;
         public List<TaskData> taskDatas;
@@ -25,6 +24,23 @@ namespace TestApp2.Models
             taskDatas = new List<TaskData>();
             for (int i = 0; i < 6; i++)
                 taskDatas.Add(new TaskData());
+        }
+
+        public List<string> getTesterInfoList()
+        {
+            var resultList = new List<string>();
+            resultList.Add(lastName);
+            resultList.Add(sumCountTest.ToString());
+            for (int i = 0; i < taskDatas.Count; i++)
+            {
+                resultList.Add(taskDatas[i].count.ToString());
+            }
+            resultList.Add(GetVolumeOfComplexity().ToString());
+            resultList.Add(GetPlannedTestingTime().ToString());
+            resultList.Add(GetActualTestingTime().ToString());
+            resultList.Add((GetPlannedTestingTime() - GetActualTestingTime()).ToString());
+
+            return resultList;
         }
 
         public void AddTaskData(int comlexity, int time)
@@ -56,9 +72,8 @@ namespace TestApp2.Models
         }
         public double GetActualTestingTime()
         {
-            int[] planing_time = new int[6] { 15, 30, 60, 132, 180, 230 };
             double sum_time = 0;
-            for (int i = 0; i < planing_time.Count(); i++)
+            for (int i = 0; i < taskDatas.Count; i++)
             {
                 sum_time += (taskDatas[i].time * taskDatas[i].count);
             }

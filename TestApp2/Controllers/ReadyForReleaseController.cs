@@ -1,4 +1,5 @@
-﻿using Microsoft.TeamFoundation.WorkItemTracking.WebApi;
+﻿using Microsoft.TeamFoundation.Core.WebApi;
+using Microsoft.TeamFoundation.WorkItemTracking.WebApi;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 using Microsoft.VisualStudio.Services.OAuth;
 using Microsoft.VisualStudio.Services.WebApi;
@@ -34,10 +35,32 @@ namespace TestApp2.Controllers
                 var result_dict = result_tuple.Item1;
                 var fail = result_tuple.Item2;
                 ViewBag.Fail = fail;
+                ViewBag.Table = result_dict;
             }
+
+            List<string> tags = new List<string>() { "test", "do it" };
+            ViewBag.Tags = tags;
+
             return View();
         }
 
+        //public List<string> GetListOfTags(VssConnection connection)
+        //{
+        //    Guid projectId = ClientSampleHelpers.FindAnyProject(this.Context).Id;
+
+        //    TaggingHttpClient taggingClient = connection.GetClient<TaggingHttpClient>();
+
+        //    WebApiTagDefinitionList listofTags = taggingClient.GetTagsAsync(projectId).Result;
+
+        //    Console.WriteLine("List of tags:");
+
+        //    foreach (var tag in listofTags)
+        //    {
+        //        Console.WriteLine("  ({0}) - {1}", tag.Id.ToString(), tag.Name);
+        //    }
+
+        //    return listofTags;
+        //}
 
         public static WorkItemQueryResult ExecuteItemsSelectionWQery(VssConnection _connection)
         {
@@ -107,6 +130,7 @@ namespace TestApp2.Controllers
 
                                 // номер для группировки
                                 int rbnId = int.Parse(workItem.Fields["Custom.ReleaseBranchBuildNumber"].ToString());
+                                var sumRowTester = new TesterModel();
                                 //проверяем была ли уже создана такая группа если нет то добавим
                                 if (!resultDictionary.ContainsKey(rbnId))
                                     resultDictionary.Add(rbnId, new Dictionary<string, TesterModel>());
@@ -125,9 +149,15 @@ namespace TestApp2.Controllers
                                     //записать
                                     resultDictionary[rbnId][id].lastName = name;
                                     resultDictionary[rbnId][id].AddTaskData(compl, time);
+
+                                    sumRowTester.lastName = "Итого";
+                                    sumRowTester.AddTaskData(compl, time);
+
                                     // next
                                     i++;
                                 }
+                                var sumDict = new Dictionary<string, TesterModel>();
+                                resultDictionary[rbnId].Add("0", sumRowTester);
                             }
                             // write work item to console
                             //result_string += ("{0} {1}", workItem.Id, workItem.Fields["System.Title"]);

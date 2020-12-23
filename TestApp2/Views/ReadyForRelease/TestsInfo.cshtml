@@ -1,4 +1,6 @@
-﻿
+﻿@using TestApp2.Models;
+@model TesterModel
+
 @{
     ViewBag.Title = "TestsInfo";
 
@@ -9,13 +11,48 @@
 <form>
     <p>
         <select name="tasktags">
-            <option value="do it" selected>Do it</option>
-            <option value="do it">Раки, фаршированные по-царски</option>
-            <option value="test">Test</option>
-            <option value="test">Галушки славянские</option>
+            @for (int i = 0; i < ViewBag.Tags.Count; i++)
+            {
+                <option value=@ViewBag.Tags[i]>@ViewBag.Tags[i]</option>
+            }
+
         </select>
     </p>
     <p><input type="submit" value="Отправить"></p>
 
     <p> @ViewBag.Fail</p>
 </form>
+
+<table border="1">
+    <caption>Отчёт по тестам в состоянии Ready For Release</caption>
+    <tr>
+        <th>WorkPractice</th>
+        <th>Общее кол-во тасков</th>
+        <th>Сложность 1</th>
+        <th>Сложность 2</th>
+        <th>Сложность 3</th>
+        <th>Сложность 4</th>
+        <th>Сложность 5</th>
+        <th>Сложность 6</th>
+        <th>Объём сложности</th>
+        <th>Время (план)</th>
+        <th>Время (факт)</th>
+        <th>Отклонение</th>
+    </tr>
+
+    @foreach (var blockKey in ViewBag.Table.Keys)
+    {
+        <tr><td>@blockKey</td></tr>
+        foreach (var testerKey in ViewBag.Table[blockKey].Keys)
+        {
+            TesterModel tester = ViewBag.Table[blockKey][testerKey];
+            <tr>
+                @foreach (var item in tester.getTesterInfoList())
+                {
+                    <td>@item</td>
+                }
+        </tr>
+    }
+}
+
+</table>
