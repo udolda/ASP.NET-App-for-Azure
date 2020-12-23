@@ -142,8 +142,10 @@ namespace TestApp2.Tools
                                     // номер для группировки
                                     int rbnId = int.Parse(workItem.Fields["Custom.ReleaseBranchBuildNumber"].ToString());
                                     //проверяем была ли уже создана такая группа если нет то добавим
-                                    if (!resultDictionary.ContainsKey(rbnId))
+                                    if (!resultDictionary.ContainsKey(rbnId)) {
                                         resultDictionary.Add(rbnId, new Dictionary<string, TesterModel>());
+                                        resultDictionary[rbnId].Add("0", new TesterModel());//итоговая сумма для каждого
+                                    }
                                     var i = 1; // показывает сколько у нас тестеров
                                     while  (workItem.Fields.ContainsKey("Custom.ReleaseTester" + i))
                                     {
@@ -159,6 +161,9 @@ namespace TestApp2.Tools
 
                                         resultDictionary[rbnId][id].lastName = name;
                                         resultDictionary[rbnId][id].AddTaskData(compl, time);
+                                        //добавлять новую сумму
+                                        resultDictionary[rbnId]["0"].AddTaskData(compl, time);
+
                                         // next
                                         i++;
                                     }

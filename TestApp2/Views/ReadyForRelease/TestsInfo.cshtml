@@ -45,14 +45,24 @@
         <tr><td>@blockKey</td></tr>
         foreach (var testerKey in ViewBag.Table[blockKey].Keys)
         {
-            TesterModel tester = ViewBag.Table[blockKey][testerKey];
-            <tr>
-                @foreach (var item in tester.getTesterInfoList())
-                {
-                    <td>@item</td>
-                }
+            if (testerKey != "0")
+            {
+                TesterModel tester = ViewBag.Table[blockKey][testerKey];
+                <tr>
+                    @foreach (var item in tester.getTesterInfoList())
+                    {
+                        <td>@item</td>
+                    }
+                </tr>
+            }
+        }
+        //в последнюю очередь выводим общую сумму
+        <tr>
+            @foreach (var item in ViewBag.Table[blockKey]["0"].getTesterInfoList())
+            {
+                <td>@item</td>
+            }
         </tr>
     }
-}
 
 </table>

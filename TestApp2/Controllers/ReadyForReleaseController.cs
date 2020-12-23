@@ -130,10 +130,13 @@ namespace TestApp2.Controllers
 
                                 // номер для группировки
                                 int rbnId = int.Parse(workItem.Fields["Custom.ReleaseBranchBuildNumber"].ToString());
-                                var sumRowTester = new TesterModel();
+
                                 //проверяем была ли уже создана такая группа если нет то добавим
                                 if (!resultDictionary.ContainsKey(rbnId))
+                                {
                                     resultDictionary.Add(rbnId, new Dictionary<string, TesterModel>());
+                                    resultDictionary[rbnId].Add("0", new TesterModel());//итоговая сумма для каждого
+                                }
                                 var i = 1; // показывает сколько у нас тестеров
                                 while (workItem.Fields.ContainsKey("Custom.ReleaseTester" + i))
                                 {
@@ -150,14 +153,11 @@ namespace TestApp2.Controllers
                                     resultDictionary[rbnId][id].lastName = name;
                                     resultDictionary[rbnId][id].AddTaskData(compl, time);
 
-                                    sumRowTester.lastName = "Итого";
-                                    sumRowTester.AddTaskData(compl, time);
+                                    resultDictionary[rbnId]["0"].AddTaskData(compl, time);
 
                                     // next
                                     i++;
                                 }
-                                var sumDict = new Dictionary<string, TesterModel>();
-                                resultDictionary[rbnId].Add("0", sumRowTester);
                             }
                             // write work item to console
                             //result_string += ("{0} {1}", workItem.Id, workItem.Fields["System.Title"]);
