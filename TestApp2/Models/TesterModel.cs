@@ -35,10 +35,10 @@ namespace TestApp2.Models
             {
                 resultList.Add(taskDatas[i].count.ToString());
             }
-            resultList.Add(GetVolumeOfComplexity().ToString());
-            resultList.Add(GetPlannedTestingTime().ToString());
-            resultList.Add(GetActualTestingTime().ToString());
-            resultList.Add((GetPlannedTestingTime() - GetActualTestingTime()).ToString());
+            resultList.Add(Math.Round(GetVolumeOfComplexity(),2).ToString());
+            resultList.Add(Math.Round(GetPlannedTestingTime(), 2).ToString());
+            resultList.Add(Math.Round(GetActualTestingTime(), 2).ToString());
+            resultList.Add(Math.Round((GetPlannedTestingTime() - GetActualTestingTime()),2).ToString());
 
             return resultList;
         }

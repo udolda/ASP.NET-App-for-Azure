@@ -18,6 +18,7 @@ namespace TestApp2.Controllers
 {
     public class ReadyForReleaseController : Controller
     {
+        private List<string> tagsList = new List<string>();
         // GET: ReadyForRelease
         public async Task<ActionResult> TestsInfo()
         {
@@ -33,33 +34,48 @@ namespace TestApp2.Controllers
             try
             {
                 var list_tags = await GetListOfTagsAsync(token.AccessToken);
+                list_tags = list_tags.Select(i => i.Replace(" ", "_")).ToList();
                 ViewBag.Tags = list_tags;
+                Session["taglist"] = list_tags;
             }
             catch (Exception)
             {
                 Session["info"] += "Error in GetListOfTagsAsync()";
             }
-            var list = ViewBag.Tags;
-            Session["info"] += "All good )";
-            foreach (var item in list)
-            {
-                Session["info"] += item;
-            }
-            //GetInfo.SampleREST(connect);
-            var queriResult = ExecuteItemsSelectionWQery(connect);
-            if (queriResult != null)
-            {
-                var result_tuple = reportGenerate(queriResult, connect);
-                ViewBag.Table = result_tuple.Item1;
-                ViewBag.Fail = result_tuple.Item2;
-            }
+            //tagsList = ViewBag.Tags;
+            //var list = ViewBag.Tags;
+            //Session["info"] += "All good )";
+            //foreach (var item in list)
+            //{
+            //    Session["info"] += item;
+            //}            
+
+            ViewBag.Table = new Dictionary<int, Dictionary<string, TesterModel>>();
+            ViewBag.Fail = " ";
+
             return View();
         }
 
         [HttpPost]
         public async Task<ActionResult> TestsInfo(string tasktags)
         {
-            Session["info"] += tasktags + "TASKTAGS";
+            tasktags = tasktags.Replace("_", " ");
+            // обновить токен
+            var token = (TokenModel)Session["token"];
+            //Session["token"] = await GetInfo.RefreshToken(token.RefreshToken);
+            // обновить соединение
+            var connect = new VssConnection(new Uri("https://dev.azure.com/LATeamInc/"), new VssOAuthAccessTokenCredential(((TokenModel)Session["token"]).AccessToken));
+            Session["connect"] = connect;
+            ViewBag.Name = connect.AuthorizedIdentity.DisplayName;
+            var t = Session["taglist"];
+            ViewBag.Tags = Session["taglist"];
+            var queriResult = ExecuteItemsSelectionWQery(connect,tasktags);
+            if (queriResult != null)
+            {
+                var result_tuple = reportGenerate(queriResult, connect);
+                ViewBag.Table = result_tuple.Item1;
+                ViewBag.Fail = result_tuple.Item2;
+            }
 
             return View();
         }
@@ -79,8 +95,9 @@ namespace TestApp2.Controllers
             return null;
         }
 
-        public static WorkItemQueryResult ExecuteItemsSelectionWQery(VssConnection _connection)
+        public static WorkItemQueryResult ExecuteItemsSelectionWQery(VssConnection _connection, string tag)
         {
+
             var teamProjectName = "WorkPractice";
             VssConnection connection = _connection;
             WorkItemTrackingHttpClient witClient = connection.GetClient<WorkItemTrackingHttpClient>();
@@ -92,7 +109,7 @@ namespace TestApp2.Controllers
             QueryHierarchyItem myQueriesFolder = queryHierarchyItems.FirstOrDefault(qhi => qhi.Name.Equals("My Queries"));
             if (myQueriesFolder != null)
             {
-                string queryName = "MyQueri";
+                string queryName = tag+"SomeQueri";
 
                 // See if our 'REST Sample' query already exists under 'My Queries' folder.
                 QueryHierarchyItem newBugsQuery = null;
@@ -106,7 +123,7 @@ namespace TestApp2.Controllers
                     newBugsQuery = new QueryHierarchyItem()
                     {
                         Name = queryName,
-                        Wiql = "SELECT [System.Id],[System.WorkItemType],[System.Title],[System.AssignedTo],[System.State],[System.Tags] FROM WorkItems WHERE [System.TeamProject] = @project AND [System.WorkItemType] = 'Task' AND [System.State] = 'Done'",
+                        Wiql = "SELECT [System.Id],[System.WorkItemType],[System.Title],[System.AssignedTo],[System.State],[System.Tags] FROM WorkItems WHERE [System.TeamProject] = @project AND [System.WorkItemType] = 'Task' AND [System.State] = 'Done' AND [System.Tags] Contains '"+tag+"' ",
                         IsFolder = false
                     };
                     newBugsQuery = witClient.CreateQueryAsync(newBugsQuery, teamProjectName, myQueriesFolder.Name).Result;
@@ -138,6 +155,7 @@ namespace TestApp2.Controllers
                         List<WorkItem> workItems = witClient.GetWorkItemsAsync(workItemRefs.Select(wir => wir.Id)).Result;
                         foreach (WorkItem workItem in workItems)
                         {
+                            var t = workItem.Fields["System.Tags"];
                             // выбор тега
                             //if (workItem.Fields["System.Tags"].ToString().Contains(""))
                             {
