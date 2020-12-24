@@ -6,19 +6,24 @@
 
 }
 
+<head>
+    <link type="text/css" rel="stylesheet" href="../../Content/TableTestInfo.css" />
+</head>
+
 <h2>@ViewBag.Name</h2>
 
 <form>
     <p>
-        <select name="tasktags">
+        <select class="customComb" name="tasktags">
             @for (int i = 0; i < ViewBag.Tags.Count; i++)
             {
                 <option value=@ViewBag.Tags[i]>@ViewBag.Tags[i]</option>
             }
 
         </select>
+    
+    <input class="btn btn-primary " type="submit" value="Отправить">
     </p>
-    <p><input type="submit" value="Отправить"></p>
 
     <p> @ViewBag.Fail</p>
 </form>
@@ -42,7 +47,7 @@
 
     @foreach (var blockKey in ViewBag.Table.Keys)
     {
-        <tr><td>@blockKey</td></tr>
+        <tr><td>@blockKey</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
         foreach (var testerKey in ViewBag.Table[blockKey].Keys)
         {
             if (testerKey != "0")
@@ -51,7 +56,7 @@
                 <tr>
                     @foreach (var item in tester.getTesterInfoList())
                     {
-                        <td>@item</td>
+                        <td>@string.Format("{0:N2}", item)</td>
                     }
                 </tr>
             }
@@ -60,7 +65,7 @@
         <tr>
             @foreach (var item in ViewBag.Table[blockKey]["0"].getTesterInfoList())
             {
-                <td>@item</td>
+                <td>@string.Format("{0:N2}", item)</td>
             }
         </tr>
     }

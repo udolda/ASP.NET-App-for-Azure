@@ -1,13 +1,14 @@
-﻿using Microsoft.TeamFoundation.Core.WebApi;
-using Microsoft.TeamFoundation.WorkItemTracking.WebApi;
+﻿using Microsoft.TeamFoundation.WorkItemTracking.WebApi;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 using Microsoft.VisualStudio.Services.OAuth;
 using Microsoft.VisualStudio.Services.WebApi;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 using TestApp2.Models;
 using TestApp2.Tools;
@@ -23,44 +24,49 @@ namespace TestApp2.Controllers
             // обновить токен
             var token = (TokenModel)Session["token"];
             Session["token"] = await GetInfo.RefreshToken(token.RefreshToken);
-            // обновить соединение 
+            // обновить соединение
             var connect = new VssConnection(new Uri("https://dev.azure.com/LATeamInc/"), new VssOAuthAccessTokenCredential(((TokenModel)Session["token"]).AccessToken));
             Session["connect"] = connect;
             ViewBag.Name = connect.AuthorizedIdentity.DisplayName;
+            Session["info"] += "You're before GetListOfTagsAsync()";
+
+            try
+            {
+                Task task1 = new Task(() => ViewBag.Tags = GetListOfTagsAsync(Session["token"].ToString()));
+                task1.Start();
+                Task.WaitAny(task1);
+            }
+            catch (Exception)
+            {
+                Session["info"] += "Error in GetListOfTagsAsync()";
+            }
+            Session["info"] += "Tags: " + ViewBag.FirstOrDefault();
+
             //GetInfo.SampleREST(connect);
             var queriResult = ExecuteItemsSelectionWQery(connect);
             if (queriResult != null)
             {
                 var result_tuple = reportGenerate(queriResult, connect);
-                var result_dict = result_tuple.Item1;
-                var fail = result_tuple.Item2;
-                ViewBag.Fail = fail;
-                ViewBag.Table = result_dict;
+                ViewBag.Table = result_tuple.Item1;
+                ViewBag.Fail = result_tuple.Item2;
             }
-
-            List<string> tags = new List<string>() { "test", "do it" };
-            ViewBag.Tags = tags;
-
             return View();
         }
 
-        //public List<string> GetListOfTags(VssConnection connection)
-        //{
-        //    Guid projectId = ClientSampleHelpers.FindAnyProject(this.Context).Id;
+        public async Task<List<string>> GetListOfTagsAsync(string token)
+        {
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            HttpResponseMessage responseMessage = await client.GetAsync(new Uri("https://dev.azure.com/LATeamInc/WorkPractice/_apis/wit/tags?api-version=6.0-preview.1"));
 
-        //    TaggingHttpClient taggingClient = connection.GetClient<TaggingHttpClient>();
-
-        //    WebApiTagDefinitionList listofTags = taggingClient.GetTagsAsync(projectId).Result;
-
-        //    Console.WriteLine("List of tags:");
-
-        //    foreach (var tag in listofTags)
-        //    {
-        //        Console.WriteLine("  ({0}) - {1}", tag.Id.ToString(), tag.Name);
-        //    }
-
-        //    return listofTags;
-        //}
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                // Обрабатывать успешный запрос
+                String body = await responseMessage.Content.ReadAsStringAsync();
+                return JObject.Parse(body)["value"].Select(i => i["name"].ToString()).ToList(); ;
+            }
+            return null;
+        }
 
         public static WorkItemQueryResult ExecuteItemsSelectionWQery(VssConnection _connection)
         {

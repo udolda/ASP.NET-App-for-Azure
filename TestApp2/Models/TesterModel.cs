@@ -19,7 +19,7 @@ namespace TestApp2.Models
 
         public TesterModel()
         {
-            lastName = "None";
+            lastName = "ИТОГО";
             sumCountTest = 0;
             taskDatas = new List<TaskData>();
             for (int i = 0; i < 6; i++)
@@ -75,7 +75,7 @@ namespace TestApp2.Models
             double sum_time = 0;
             for (int i = 0; i < taskDatas.Count; i++)
             {
-                sum_time += (taskDatas[i].time * taskDatas[i].count);
+                sum_time += (taskDatas[i].time);
             }
             return sum_time / 60;
         }
