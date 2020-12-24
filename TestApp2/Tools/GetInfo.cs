@@ -14,6 +14,7 @@ using Microsoft.VisualStudio.Services.Client;
 using Microsoft.VisualStudio.Services.Common;
 using Microsoft.VisualStudio.Services.WebApi;
 using Newtonsoft.Json.Linq;
+using TestApp2.Models;
 using static TestApp2.Models.TokenMolel;
 
 namespace TestApp2.Tools
@@ -67,7 +68,7 @@ namespace TestApp2.Tools
 
             return token;
         }
-        public static void SampleREST(VssConnection _connection)
+        public static string SampleREST(VssConnection _connection)
         {
             var teamProjectName = "WorkPractice";
             // Connection может быть создан один раз для каждого приложения, и мы будем использовать его для получения объектов httpclient.
@@ -112,7 +113,7 @@ namespace TestApp2.Tools
 
                 // run the 'REST Sample' query
                 WorkItemQueryResult result = witClient.QueryByIdAsync(newBugsQuery.Id).Result;
-
+                string result_string = "";
                 if (result.WorkItems.Any())
                 {
                     int skip = 0;
@@ -123,12 +124,52 @@ namespace TestApp2.Tools
                         workItemRefs = result.WorkItems.Skip(skip).Take(batchSize);
                         if (workItemRefs.Any())
                         {
+                            var resultDictionary = new Dictionary<int, Dictionary<string,TesterModel>>();
                             // get details for each work item in the batch
+                            witClient = connection.GetClient<WorkItemTrackingHttpClient>();
                             List<WorkItem> workItems = witClient.GetWorkItemsAsync(workItemRefs.Select(wir => wir.Id)).Result;
                             foreach (WorkItem workItem in workItems)
                             {
+                                // выбор тега
+                                //if (workItem.Fields["System.Tags"].ToString().Contains(""))
+                                {
+                                    // первый тестер должен иметь 2 парамета, второй либо имеет оба парамета, либо ни одного, при этом сложность и ветка должны быть указаны
+                                    if (!(workItem.Fields.ContainsKey("Custom.ReleaseTester1") && workItem.Fields.ContainsKey("Custom.ReleaseTestingTime1")) ||
+                                        (workItem.Fields.ContainsKey("Custom.ReleaseTester2") ^ workItem.Fields.ContainsKey("Custom.ReleaseTestingTime2")) ||
+                                       (!workItem.Fields.ContainsKey("Custom.TestingComplexity")) || (!workItem.Fields.ContainsKey("Custom.ReleaseBranchBuildNumber")))
+                                        { result_string += workItem.Fields["System.Title"] + "<- bad boy "; continue; }
+
+                                    // номер для группировки
+                                    int rbnId = int.Parse(workItem.Fields["Custom.ReleaseBranchBuildNumber"].ToString());
+                                    //проверяем была ли уже создана такая группа если нет то добавим
+                                    if (!resultDictionary.ContainsKey(rbnId)) {
+                                        resultDictionary.Add(rbnId, new Dictionary<string, TesterModel>());
+                                        resultDictionary[rbnId].Add("0", new TesterModel());//итоговая сумма для каждого
+                                    }
+                                    var i = 1; // показывает сколько у нас тестеров
+                                    while  (workItem.Fields.ContainsKey("Custom.ReleaseTester" + i))
+                                    {
+                                        // id группы, если такой еще не создали, то создаем
+                                        var id = ((IdentityRef)workItem.Fields["Custom.ReleaseTester"+i]).Id;
+                                        if (!resultDictionary[rbnId].ContainsKey(id))
+                                            resultDictionary[rbnId].Add(id, new TesterModel());
+                                        // получить имя
+                                        var name  = ((IdentityRef)workItem.Fields["Custom.ReleaseTester" + i]).DisplayName;
+                                        // Определяем данные о такске(сложность и время)
+                                        var compl = int.Parse(workItem.Fields["Custom.TestingComplexity"].ToString());
+                                        var time = int.Parse(workItem.Fields["Custom.ReleaseTestingTime" + i].ToString());
+
+                                        resultDictionary[rbnId][id].lastName = name;
+                                        resultDictionary[rbnId][id].AddTaskData(compl, time);
+                                        //добавлять новую сумму
+                                        resultDictionary[rbnId]["0"].AddTaskData(compl, time);
+
+                                        // next
+                                        i++;
+                                    }
+                                }
                                 // write work item to console
-                                Console.WriteLine("{0} {1}", workItem.Id, workItem.Fields["System.Title"]);
+                                result_string += ("{0} {1}", workItem.Id, workItem.Fields["System.Title"]);
                             }
                         }
                         skip += batchSize;
@@ -139,7 +180,9 @@ namespace TestApp2.Tools
                 {
                     Console.WriteLine("No work items were returned from query.");
                 }
+                return result_string;
             }
+            return " ";
         }
     }
 }
