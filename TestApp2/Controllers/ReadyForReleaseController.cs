@@ -23,7 +23,7 @@ namespace TestApp2.Controllers
         {
             // обновить токен
             var token = (TokenModel)Session["token"];
-            Session["token"] = await GetInfo.RefreshToken(token.RefreshToken);
+            //Session["token"] = await GetInfo.RefreshToken(token.RefreshToken);
             // обновить соединение
             var connect = new VssConnection(new Uri("https://dev.azure.com/LATeamInc/"), new VssOAuthAccessTokenCredential(((TokenModel)Session["token"]).AccessToken));
             Session["connect"] = connect;
@@ -32,16 +32,19 @@ namespace TestApp2.Controllers
 
             try
             {
-                Task task1 = new Task(() => ViewBag.Tags = GetListOfTagsAsync(Session["token"].ToString()));
-                task1.Start();
-                Task.WaitAny(task1);
+                var list_tags = await GetListOfTagsAsync(token.AccessToken);
+                ViewBag.Tags = list_tags;
             }
             catch (Exception)
             {
                 Session["info"] += "Error in GetListOfTagsAsync()";
             }
-            Session["info"] += "Tags: " + ViewBag.FirstOrDefault();
-
+            var list = ViewBag.Tags;
+            Session["info"] += "All good )";
+            foreach (var item in list)
+            {
+                Session["info"] += item;
+            }
             //GetInfo.SampleREST(connect);
             var queriResult = ExecuteItemsSelectionWQery(connect);
             if (queriResult != null)
@@ -50,6 +53,14 @@ namespace TestApp2.Controllers
                 ViewBag.Table = result_tuple.Item1;
                 ViewBag.Fail = result_tuple.Item2;
             }
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> TestsInfo(string tasktags)
+        {
+            Session["info"] += tasktags + "TASKTAGS";
+
             return View();
         }
 
