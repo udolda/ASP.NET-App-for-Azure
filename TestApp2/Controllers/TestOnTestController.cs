@@ -11,14 +11,12 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using TestApp2.Models;
-using TestApp2.Tools;
 using static TestApp2.Models.TokenMolel;
 
 namespace TestApp2.Controllers
 {
     public class TestOnTestController : Controller
     {
-
         // GET: ReadyForRelease
         public async Task<ActionResult> TestsInfo()
         {
@@ -128,7 +126,6 @@ namespace TestApp2.Controllers
 
         public static (Dictionary<string, TesterModel>, string) reportGenerate(WorkItemQueryResult result, VssConnection connection)
         {
-            string result_string = "";
             var resultDictionary = new Dictionary<string, TesterModel>();
             string fail = "";
             if (result.WorkItems.Any())
@@ -177,7 +174,6 @@ namespace TestApp2.Controllers
                             }
 
                             // write work item to console
-                            //result_string += ("{0} {1}", workItem.Id, workItem.Fields["System.Title"]);
                             fail += workItem.Fields["System.Title"] + " - good\n";
                         }
                     }
@@ -195,7 +191,5 @@ namespace TestApp2.Controllers
             (workItem.Fields.ContainsKey("Custom.FeatureTester2") ^ workItem.Fields.ContainsKey("Custom.FeatureTestingTime2")) ||
             (!workItem.Fields.ContainsKey("Custom.TestingComplexity")));
 
-
-       
     }
 }

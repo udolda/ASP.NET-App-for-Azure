@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Web;
 
 namespace TestApp2.Models
 {
@@ -25,5 +22,6 @@ namespace TestApp2.Models
 
             public bool IsPending { get; set; }
         }
+
     }
 }

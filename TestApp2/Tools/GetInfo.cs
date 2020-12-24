@@ -1,19 +1,14 @@
-﻿using System;
+﻿using Microsoft.TeamFoundation.WorkItemTracking.WebApi;
+using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
+using Microsoft.VisualStudio.Services.WebApi;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using System.Web;
-using Microsoft.TeamFoundation.WorkItemTracking.WebApi;
-using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
-
-using Microsoft.VisualStudio.Services.Client;
-
-using Microsoft.VisualStudio.Services.Common;
-using Microsoft.VisualStudio.Services.WebApi;
-using Newtonsoft.Json.Linq;
 using TestApp2.Models;
 using static TestApp2.Models.TokenMolel;
 
@@ -21,7 +16,6 @@ namespace TestApp2.Tools
 {
     public class GetInfo
     {
-
         /// <summary>
         /// Gets a new access
         /// </summary>
@@ -68,6 +62,7 @@ namespace TestApp2.Tools
 
             return token;
         }
+
         public static string SampleREST(VssConnection _connection)
         {
             var teamProjectName = "WorkPractice";
@@ -184,5 +179,6 @@ namespace TestApp2.Tools
             }
             return " ";
         }
+
     }
 }

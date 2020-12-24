@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace TestApp2.Models
 {
@@ -79,7 +78,6 @@ namespace TestApp2.Models
             }
             return sum_time / 60;
         }
-
 
     }
 }
