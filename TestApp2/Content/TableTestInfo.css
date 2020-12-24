@@ -25,3 +25,10 @@ th:first-child, td:first-child {
     text-align: left;
 }
 
+.customComb {
+    background: #EEEEEE;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
