@@ -18,7 +18,7 @@ namespace TestApp2.Controllers
 {
     public class ReadyForReleaseController : Controller
     {
-        private List<string> tagsList = new List<string>();
+        
         // GET: ReadyForRelease
         public async Task<ActionResult> TestsInfo()
         {

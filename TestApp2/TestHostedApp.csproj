@@ -280,15 +280,13 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OAuthController.cs" />
     <Compile Include="Controllers\ReadyForReleaseController.cs" />
+    <Compile Include="Controllers\TestOnTestController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\LoginViewModel.cs" />
-    <Compile Include="Models\ReadyForReleaseModel.cs" />
     <Compile Include="Models\TesterModel.cs" />
     <Compile Include="Models\TokenMolel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -334,9 +332,9 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\OAuth\TokenView.cshtml" />
     <Content Include="Views\ReadyForRelease\TestsInfo.cshtml" />
+    <Content Include="Views\TestOnTest\TestsInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
