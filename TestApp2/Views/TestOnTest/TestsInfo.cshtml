@@ -14,7 +14,7 @@
 
 <form method="post">
     <p>
-        Выберите тег 
+        Выберите тег
         <select class="customComb" name="tasktags">
             @for (int i = 0; i < ViewBag.Tags.Count; i++)
             {
@@ -22,8 +22,8 @@
             }
 
         </select>
-    
-    <input class="btn btn-primary " type="submit" value="Отправить">
+
+        <input class="btn btn-primary " type="submit" value="Отправить">
     </p>
 
     <p> @ViewBag.Fail</p>
@@ -46,29 +46,30 @@
         <th>Отклонение</th>
     </tr>
 
-    @foreach (var blockKey in ViewBag.Table.Keys)
+    @foreach (var testerKey in ViewBag.Table.Keys)
     {
-        <tr><td>@blockKey</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-        foreach (var testerKey in ViewBag.Table[blockKey].Keys)
+        if (testerKey != "0")
         {
-            if (testerKey != "0")
-            {
-                TesterModel tester = ViewBag.Table[blockKey][testerKey];
-                <tr>
-                    @foreach (var item in tester.getTesterInfoList())
-                    {
+            TesterModel tester = ViewBag.Table[testerKey];
+            <tr>
+                @foreach (var item in tester.getTesterInfoList())
+                {
                     <td>@item</td>
-                    }
-                </tr>
-            }
+                }
+            </tr>
         }
-        //в последнюю очередь выводим общую сумму
-        <tr>
-            @foreach (var item in ViewBag.Table[blockKey]["0"].getTesterInfoList())
+
+    }
+    <tr>
+        @if (ViewBag.Table.Count > 0)
+        {
+            TesterModel all = ViewBag.Table["0"] as TesterModel;
+            foreach (var item in all.getTesterInfoList())
             {
                 <td>@item</td>
             }
-        </tr>
-    }
+        }
+    </tr>
+
 
 </table>
