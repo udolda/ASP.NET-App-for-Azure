@@ -11,6 +11,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using TestApp2.Models;
+using TestApp2.Tools;
 using static TestApp2.Models.TokenMolel;
 
 namespace TestApp2.Controllers
@@ -22,22 +23,17 @@ namespace TestApp2.Controllers
         {
             // обновить токен
             var token = (TokenModel)Session["token"];
-            //Session["token"] = await GetInfo.RefreshToken(token.RefreshToken);
+            Session["token"] = await GetInfo.RefreshToken(token.RefreshToken);
             // обновить соединение
             var connect = new VssConnection(new Uri("https://dev.azure.com/LATeamInc/"), new VssOAuthAccessTokenCredential(((TokenModel)Session["token"]).AccessToken));
             Session["connect"] = connect;
             ViewBag.Name = connect.AuthorizedIdentity.DisplayName;
-            try
-            {
-                var list_tags = await GetListOfTagsAsync(token.AccessToken);
-                list_tags = list_tags.Select(i => i.Replace(" ", "_")).ToList();
-                ViewBag.Tags = list_tags;
-                Session["taglist"] = list_tags;
-            }
-            catch (Exception)
-            {
-                Session["info"] += "Error in GetListOfTagsAsync()";
-            }      
+
+            var list_tags = await GetListOfTagsAsync(token.AccessToken);
+            list_tags = list_tags.Select(i => i.Replace(" ", "_")).ToList();
+            ViewBag.Tags = list_tags;
+            Session["taglist"] = list_tags;
+
             //пустой список
             ViewBag.Table = new Dictionary<int, Dictionary<string, TesterModel>>();
             ViewBag.Fail = " ";
@@ -147,10 +143,10 @@ namespace TestApp2.Controllers
 
                             // первый тестер должен иметь 2 парамета, второй либо имеет оба парамета, либо ни одного, при этом сложность и ветка должны быть указаны
                             if (IsCorrect(workItem))
-                            { fail += workItem.Fields["System.Title"] + "Incorrect field card, task is not counted\n"; continue; }
+                            { fail += " <" + workItem.Fields["System.Title"] + "> "; continue; }
 
                             // номер для группировки
-                            
+
                             var i = 1; // показывает сколько у нас тестеров
                             while (workItem.Fields.ContainsKey("Custom.FeatureTester" + i))
                             {
@@ -173,15 +169,13 @@ namespace TestApp2.Controllers
                                 i++;
                             }
 
-                            // write work item to console
-                            fail += workItem.Fields["System.Title"] + " - good\n";
                         }
                     }
                     skip += batchSize;
                 }
                 while (workItemRefs.Count() == batchSize);
             }
-
+            fail += "-Incorrect field card, task is not counted";
             return (resultDictionary, fail);
         }
 

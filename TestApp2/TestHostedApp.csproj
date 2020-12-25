@@ -290,7 +290,6 @@
     <Compile Include="Models\TesterModel.cs" />
     <Compile Include="Models\TokenMolel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tools\Authenticate.cs" />
     <Compile Include="Tools\GetInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -335,6 +334,7 @@
     <Content Include="Views\OAuth\TokenView.cshtml" />
     <Content Include="Views\ReadyForRelease\TestsInfo.cshtml" />
     <Content Include="Views\TestOnTest\TestsInfo.cshtml" />
+    <Content Include="Views\Home\Manage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

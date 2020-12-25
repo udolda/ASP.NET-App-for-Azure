@@ -1,12 +1,20 @@
-﻿@{
+﻿@using Microsoft.VisualStudio.Services.WebApi;
+@{
     ViewBag.Title = "Home Page";
-    string s = Session["info"] == null ? "fuck, no data" : (string)Session["info"];
+    string info = Session["info"] == null ? " " : (string)Session["info"];
 }
 
 <div class="jumbotron">
-    <h1>LATeam представляет</h1>
-    <p class="lead"> Информация о тестированиях! </p>
-    <p class="lead">@s</p>
-    <p class="btn btn-primary "> @Html.ActionLink("Погнали", "Login",@*"Account",*@routeValues: null, htmlAttributes: new { id = "loginLink" })</p>
-    
+    <h1>Информация о тестированиях </h1>
+    <p class="lead"> LATeam представляет</p>
+    <p class="lead">@info</p>
+    @if (Session["connect"] is VssConnection && ((VssConnection)Session["connect"]).HasAuthenticated)
+    {
+        var teamPC = (VssConnection)Session["connect"];
+        <p class="active"> Вы авторизовались! </p>
+    }
+    else
+    {
+        <p class="btn btn-primary "> @Html.ActionLink("Вход", "Authorize", "OAuth")</p>
+    }
 </div>
