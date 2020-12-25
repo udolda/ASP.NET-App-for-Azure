@@ -50,6 +50,7 @@ namespace TestApp2.Models
             taskDatas[comlexity-1] = val;
             sumCountTest += 1;
         }
+
         public double GetVolumeOfComplexity()
         {
             double sum_volume = 0;
@@ -59,6 +60,7 @@ namespace TestApp2.Models
             }
             return sum_volume;
         }
+
         public double GetPlannedTestingTime()
         {
             int[] planing_time = new int[6] { 15, 30, 60, 132, 180, 230 };
@@ -69,6 +71,7 @@ namespace TestApp2.Models
             }
             return sum_time / 60;
         }
+
         public double GetActualTestingTime()
         {
             double sum_time = 0;

@@ -18,7 +18,7 @@ namespace TestApp2.Controllers
 {
     public class ReadyForReleaseController : Controller
     {
-        // GET: ReadyForRelease
+        //GET: ReadyForRelease
         public async Task<ActionResult> TestsInfo()
         {
             // обновить токен

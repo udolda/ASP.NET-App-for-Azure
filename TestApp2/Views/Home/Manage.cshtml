@@ -7,7 +7,6 @@
 <div class="jumbotron">
     <h1>Личный кабинет</h1>
     <h2>@teamPC.AuthorizedIdentity.DisplayName</h2>
-    <p class="lead"> LATeam представляет</p>
     @if (ViewBag.HasAccess)
     {
         <p> У вас есть доступ к WorkPractice </p>
@@ -15,7 +14,7 @@
     else
     {
         <p class="active" >У вас нет доступа кWorkPractice </p>
-        <p> Обратитесь к урминистратору проекта для его получения</p>
+        <p> Обратитесь к администратору проекта для его получения</p>
     }
 </div>
 

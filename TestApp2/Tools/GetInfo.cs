@@ -1,15 +1,10 @@
-﻿using Microsoft.TeamFoundation.WorkItemTracking.WebApi;
-using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
-using Microsoft.VisualStudio.Services.WebApi;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using TestApp2.Models;
 using static TestApp2.Models.TokenMolel;
 
 namespace TestApp2.Tools
@@ -62,8 +57,6 @@ namespace TestApp2.Tools
 
             return token;
         }
-
-       
 
     }
 }

@@ -7,7 +7,7 @@
 <div class="jumbotron">
     <h1>Информация о тестированиях </h1>
     <p class="lead"> LATeam представляет</p>
-    <p class="lead">@info</p>
+    @*<p class="lead">@info</p>*@
     @if (Session["connect"] is VssConnection && ((VssConnection)Session["connect"]).HasAuthenticated)
     {
         var teamPC = (VssConnection)Session["connect"];
@@ -15,6 +15,6 @@
     }
     else
     {
-        <p class="btn btn-primary "> @Html.ActionLink("Вход", "Authorize", "OAuth")</p>
+        <p><a href="/Oauth/Authorize" class="btn btn-primary btn-large">Войти &raquo;</a></p>
     }
 </div>
